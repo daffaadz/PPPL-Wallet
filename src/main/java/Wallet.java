@@ -40,7 +40,6 @@ public class Wallet {
 
     public boolean withdraw(double amount) {
         if (amount > this.cash) {
-            System.out.println("Not enough money woe!!");
             return false;
         }
         this.cash -= amount;
@@ -57,5 +56,18 @@ public class Wallet {
             return cards.removeLast();
         }
         return null;
+    }
+
+    public boolean hasCard(String bankName, String accountNumber) {
+        return cards.contains(bankName + " (" + accountNumber + ")");
+    }
+
+    public boolean hasSufficientFunds(double amount) {
+        return this.cash >= amount;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Wallet[owner=%s, cash=%.2f, cards=%d]", owner, cash, cards.size());
     }
 }
