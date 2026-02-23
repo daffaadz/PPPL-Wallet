@@ -62,7 +62,7 @@ public class Wallet {
         return cards.contains(bankName + " (" + accountNumber + ")");
     }
 
-    public boolean hasSufficientFunds(double amount) {
+    public boolean hasEnoughFunds(double amount) {
         return this.cash >= amount;
     }
 

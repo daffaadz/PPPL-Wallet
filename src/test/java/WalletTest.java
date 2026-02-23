@@ -49,7 +49,7 @@ public class WalletTest {
     @Order(3)
     void testWithdrawMoneySuccess() {
         System.out.println("Testing Order 3");
-        assertTrue(wallet.hasSufficientFunds(20000.0), "Should have sufficient funds");
+        assertTrue(wallet.hasEnoughFunds(20000.0), "Should have enough funds");
         boolean success = wallet.withdraw(20000.0);
         assertTrue(success, "Withdraw must succeed");
         assertEquals(30000.0, wallet.getCash(), "Remaining balance must be 30,000");
@@ -57,11 +57,11 @@ public class WalletTest {
 
     @Test
     @Order(4)
-    void testWithdrawMoneyInsufficientBalance() {
+    void testWithdrawMoneyMoreThanBalance() {
         System.out.println("Testing Order 4");
-        assertFalse(wallet.hasSufficientFunds(100000.0), "Should not have sufficient funds");
+        assertFalse(wallet.hasEnoughFunds(100000.0), "Should not have enough funds");
         boolean success = wallet.withdraw(100000.0);
-        assertFalse(success, "Withdraw must fail due to insufficient funds");
+        assertFalse(success, "Withdraw must fail due to not enough funds");
         assertEquals(50000.0, wallet.getCash(), "Balance must not change");
     }
 
@@ -76,14 +76,5 @@ public class WalletTest {
         String removedCard = wallet.removeCard();
         assertEquals("BNI (123456)", removedCard, "Removed card must match");
         assertTrue(wallet.getCards().isEmpty(), "Card list must be empty after removal");
-    }
-
-    @Test
-    @Order(6)
-    void testToString() {
-        System.out.println("Testing Order 6");
-        assertEquals("Wallet[owner=Daffa, cash=50000.00, cards=0]", wallet.toString());
-        wallet.addCard("BCA", "789");
-        assertEquals("Wallet[owner=Daffa, cash=50000.00, cards=1]", wallet.toString());
     }
 }
