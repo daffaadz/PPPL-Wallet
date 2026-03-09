@@ -3,6 +3,7 @@ import java.util.List;
 
 public class Wallet {
     private String owner;
+    private Owner ownerObject;
     private final List<String> cards;
     private double cash;
 
@@ -20,6 +21,14 @@ public class Wallet {
         this.owner = owner;
     }
 
+    public void setOwner(Owner owner) {
+        this.ownerObject = owner;
+    }
+
+    public Owner getOwnerObject() {
+        return ownerObject;
+    }
+
     public List<String> getCards() {
         return cards;
     }
@@ -33,17 +42,21 @@ public class Wallet {
     }
 
     public void deposit(double amount) {
-        if (amount > 0) {
-            this.cash += amount;
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive, got: " + amount);
         }
+        this.cash += amount;
     }
 
-    public boolean withdraw(double amount) {
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdraw amount must be positive, got: " + amount);
+        }
         if (amount > this.cash) {
-            return false;
+            throw new InsufficientFundsException(
+                    "Insufficient funds: balance is " + this.cash + ", requested " + amount);
         }
         this.cash -= amount;
-        return true;
     }
 
     public void addCard(String bankName, String accountNumber) {
